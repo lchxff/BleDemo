@@ -1,14 +1,19 @@
 package com.ble.bledemo.adapter;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ble.bledemo.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,9 +27,18 @@ import butterknife.ButterKnife;
 public class BluetoothListAdapter extends RecyclerView.Adapter<BluetoothListAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
+    private List<BluetoothDevice> datas;
 
     public BluetoothListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
+        datas = new ArrayList<>();
+    }
+
+    public void updateData(BluetoothDevice device) {
+        if (!datas.contains(device)){
+            datas.add(device);
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull
@@ -37,11 +51,24 @@ public class BluetoothListAdapter extends RecyclerView.Adapter<BluetoothListAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        String name = datas.get(position).getName();
+        String address = datas.get(position).getAddress();
+        if (!TextUtils.isEmpty(address)){
+            holder.addressTv.setText(address);
+        }else {
+            holder.addressTv.setText("--");
+        }
+
+        if (!TextUtils.isEmpty(name)){
+            holder.nameTv.setText(name);
+        }else {
+            holder.nameTv.setText("未知的设备");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return datas == null ? 0 : datas.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
