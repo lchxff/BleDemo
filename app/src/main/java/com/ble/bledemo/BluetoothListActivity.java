@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -37,6 +38,7 @@ public class BluetoothListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_list);
         ButterKnife.bind(this);
+        handler = new Handler();
         initView();
         initBlue();
     }
@@ -63,6 +65,7 @@ public class BluetoothListActivity extends AppCompatActivity {
         adapter = new BluetoothListAdapter(this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, manager.getOrientation()));
         recyclerView.setAdapter(adapter);
     }
 
